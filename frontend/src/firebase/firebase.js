@@ -3,9 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 
+const api = import.meta.env.VITE_GOOGLE_API;
+
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyB21eQ17p0LvH_tG4Ol3Z5iII5BEs7dliY",
+  apiKey: api,
   authDomain: "dsa-quest-ef17e.firebaseapp.com",
   projectId: "dsa-quest-ef17e",
   storageBucket: "dsa-quest-ef17e.appspot.com",
@@ -20,4 +23,4 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-export {app, auth, db};
+export { app, auth, db };
