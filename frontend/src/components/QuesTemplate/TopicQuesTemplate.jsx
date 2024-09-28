@@ -45,10 +45,10 @@ const TopicQuesTemplate = () => {
   const [ques, setQues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [noteVal, setNoteVal] = useState("");
-  const [marked, setMarked] = useState(false);
-  const [isFilled, setIsFilled] = useState(
-    localStorage.getItem(`star-${ques.quesId}`) === "filled"
-  );
+  // State to track which questions are marked for revision
+  const [markedQuestions, setMarkedQuestions] = useState({});
+  // State to track checkbox completion for each question
+  const [completedQuestions, setCompletedQuestions] = useState({});
 
   useEffect(() => {
     setLoading(true);
@@ -56,13 +56,12 @@ const TopicQuesTemplate = () => {
       axios
         .get(`http://localhost:8000/api/questions/get-${topic}-questions`)
         .then((res) => {
-          console.log(res.data);
           setQues(res.data);
         })
         .catch((err) => console.log(err));
     };
-
     fetchQuestions();
+
     setLoading(false);
   }, []);
 
@@ -92,7 +91,6 @@ const TopicQuesTemplate = () => {
           setNoteVal(res.data.note);
         })
         .catch((err) => {
-          console.log(err);
           setNoteVal("");
         });
     } else {
@@ -101,48 +99,53 @@ const TopicQuesTemplate = () => {
     }
   };
 
-  const handleCheckboxChange = async (ques, isChecked) => {
-    const questionId = ques.quesId;
-    const tagName = ques.topic;
-    const userId = JSON.parse(localStorage.getItem("userId"));
+  // Generate a unique key for localStorage using the topic
+  const localStorageKey = `markedQuestions_${topic}`;
+  const localStorageCheckboxKey = `completedQuestions_${topic}`;
 
-    const finalData = {
-      quesId: questionId,
-      userId,
-      tag: tagName,
-      isChecked,
-    };
+  // Load marked questions from localStorage on component mount
+  useEffect(() => {
+    const savedMarkedQuestions = localStorage.getItem(localStorageKey);
+    if (savedMarkedQuestions) {
+      setMarkedQuestions(JSON.parse(savedMarkedQuestions)); // Load saved state
+    }
 
-    console.log(questionId, userId, tagName, isChecked);
+    const savedCompletedQuestions = localStorage.getItem(
+      localStorageCheckboxKey
+    );
+    if (savedCompletedQuestions) {
+      setCompletedQuestions(JSON.parse(savedCompletedQuestions)); // Load checkbox state
+    }
+  }, [localStorageKey, localStorageCheckboxKey]); // Runs when the topic changes
 
-    await axios
-      .post("http://localhost:8000/api/savestatus", finalData, {
-        headers: {
-          "Content-Type": "application/json", // Ensure the content type is correct
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        // Use the status code to determine the success message
+  // Save to localStorage when markedQuestions state changes
+  useEffect(() => {
+    localStorage.setItem(localStorageKey, JSON.stringify(markedQuestions));
+  }, [markedQuestions, localStorageKey]);
 
-        // Optionally update the state immediately for a smoother UI experience
-        setMarked((prev) => ({ ...prev, quesId: questionId, isChecked }));
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Error in Checking");
-      });
+  useEffect(() => {
+    localStorage.setItem(
+      localStorageCheckboxKey,
+      JSON.stringify(completedQuestions)
+    );
+  }, [completedQuestions, localStorageCheckboxKey]);
+
+  // Handle star click
+  const handleStarClick = (id) => {
+    setMarkedQuestions((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id], // Toggle the state for that specific question
+    }));
+
+    toast.success("Question marked for revision");
   };
 
-  const checkLoginStar = (id) => {
-    if (isLoggedIn) {
-      console.log(id);
-      setIsFilled(!isFilled);
-      localStorage.setItem(`star-${id}`, !isFilled ? "filled" : "empty");
-    } else {
-      toast.error("Please login first");
-      navigate("/login");
-    }
+  // Handle checkbox toggle
+  const handleCheckboxClick = (id) => {
+    setCompletedQuestions((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id], // Toggle the checkbox for that specific question
+    }));
   };
 
   return (
@@ -181,11 +184,9 @@ const TopicQuesTemplate = () => {
                             <input
                               id="yellow-checkbox"
                               type="checkbox"
-                              value=""
+                              checked={!!completedQuestions[ques.quesId]} // Checkbox state
+                              onChange={() => handleCheckboxClick(ques.quesId)}
                               className="w-6 h-6 cursor-pointer accent-[#ffbd25]"
-                              onClick={(e) =>
-                                handleCheckboxChange(ques, e.target.checked)
-                              }
                             />
                           </div>
                         </td>
@@ -245,15 +246,17 @@ const TopicQuesTemplate = () => {
                             className="w-full flex items-center justify-center"
                             onClick={() => checkLoginStar(ques.quesId)}
                           >
-                            {isFilled ? (
+                            {markedQuestions[ques.quesId] ? (
                               <FaStar
                                 size={"1.25rem"}
-                                className="hover:text-[#ffbd25] cursor-pointer"
+                                style={{ color: "gold", cursor: "pointer" }}
+                                onClick={() => handleStarClick(ques.quesId)}
                               />
                             ) : (
                               <FaRegStar
                                 size={"1.25rem"}
-                                className="hover:text-[#ffbd25] cursor-pointer"
+                                style={{ cursor: "pointer" }}
+                                onClick={() => handleStarClick(ques.quesId)}
                               />
                             )}
                           </div>

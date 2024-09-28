@@ -4,7 +4,6 @@ export const AnswerCount = createContext();
 
 const AnswerCountProvider = (props) => {
   const [answerCount, setAnswerCount] = useState(0);
-  console.log(answerCount);
 
   return (
     <AnswerCount.Provider value={{ answerCount, setAnswerCount }}>
