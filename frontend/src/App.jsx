@@ -7,6 +7,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { auth } from "./firebase/firebase";
 import Profile from "./components/userProfile/Profile";
 import TopicQuesTemplate from "./components/QuesTemplate/TopicQuesTemplate";
+import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 
 const App = () => {
   const [user, setUser] = useState([]);
@@ -30,7 +31,11 @@ const App = () => {
             />
           }
         />
+        {/* dyanmic routing */}
         <Route path="/apna-college/:topic" element={<TopicQuesTemplate />} />
+
+        {/* 404 landing page */}
+        <Route path="/:any" element={<NotFoundPage />} />
 
         {/* Login page */}
         <Route
