@@ -132,20 +132,28 @@ const TopicQuesTemplate = () => {
 
   // Handle star click
   const handleStarClick = (id) => {
-    setMarkedQuestions((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id], // Toggle the state for that specific question
-    }));
-
-    toast.success("Question marked for revision");
+    if (isLoggedIn) {
+      setMarkedQuestions((prevState) => ({
+        ...prevState,
+        [id]: !prevState[id], // Toggle the state for that specific question
+      }));
+    } else {
+      navigate("/login");
+      toast.error("Please login first");
+    }
   };
 
   // Handle checkbox toggle
   const handleCheckboxClick = (id) => {
-    setCompletedQuestions((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id], // Toggle the checkbox for that specific question
-    }));
+    if (isLoggedIn) {
+      setCompletedQuestions((prevState) => ({
+        ...prevState,
+        [id]: !prevState[id], // Toggle the checkbox for that specific question
+      }));
+    } else {
+      navigate("/login");
+      toast.error("Please login first");
+    }
   };
 
   return (
@@ -242,10 +250,7 @@ const TopicQuesTemplate = () => {
                         </td>
 
                         <td className="">
-                          <div
-                            className="w-full flex items-center justify-center"
-                            onClick={() => checkLoginStar(ques.quesId)}
-                          >
+                          <div className="w-full flex items-center justify-center">
                             {markedQuestions[ques.quesId] ? (
                               <FaStar
                                 size={"1.25rem"}
