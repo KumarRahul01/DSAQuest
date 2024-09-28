@@ -1,4 +1,4 @@
-import { arrayquesModel, backtrackingQuesModel, greedyQuesModel, linkedListQuesModel, searchingSortingQuesModel, stackNQueuesQuesModel, stringQuesModel, twoDarrayQuesModel } from "../models/question.model.js";
+import { arrayquesModel, backtrackingQuesModel, greedyQuesModel, linkedListQuesModel, searchingSortingQuesModel, stackNQueuesQuesModel, stringQuesModel, twoDarrayQuesModel } from "../models/questionsPath.model.js";
 
 export const getArraysQuestions = async (req, res) => {
   try {

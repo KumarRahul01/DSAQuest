@@ -49,6 +49,10 @@ const TopicQuesTemplate = () => {
   const [markedQuestions, setMarkedQuestions] = useState({});
   // State to track checkbox completion for each question
   const [completedQuestions, setCompletedQuestions] = useState({});
+  // search questions
+  const [searchQues, setSearchQues] = useState("");
+
+  const userId = JSON.parse(localStorage.getItem("userId"));
 
   useEffect(() => {
     setLoading(true);
@@ -99,61 +103,93 @@ const TopicQuesTemplate = () => {
     }
   };
 
-  // Generate a unique key for localStorage using the topic
-  const localStorageKey = `markedQuestions_${topic}`;
-  const localStorageCheckboxKey = `completedQuestions_${topic}`;
-
-  // Load marked questions from localStorage on component mount
+  // Fetch the question states when component mounts
   useEffect(() => {
-    const savedMarkedQuestions = localStorage.getItem(localStorageKey);
-    if (savedMarkedQuestions) {
-      setMarkedQuestions(JSON.parse(savedMarkedQuestions)); // Load saved state
+    const fetchState = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/getState/${topic}/${userId}`
+        );
+        const data = response.data;
+
+        const marked = {};
+        const completed = {};
+
+        data.forEach((question) => {
+          marked[question.questionId] = question.isMarkedForRevision;
+          completed[question.questionId] = question.isCompleted;
+        });
+
+        setMarkedQuestions(marked);
+        setCompletedQuestions(completed);
+      } catch (err) {
+        console.error("Error fetching question state:", err);
+      }
+    };
+
+    fetchState();
+  }, [topic, userId]);
+
+  // Save state to backend when user interacts with stars/checkboxes
+  const saveStateToBackend = async (id, isMarked, isCompleted) => {
+    try {
+      await axios.post("http://localhost:8000/api/saveState", {
+        userId,
+        topic,
+        questionId: id,
+        isMarkedForRevision: isMarked,
+        isCompleted: isCompleted,
+      });
+    } catch (err) {
+      console.error("Error saving state:", err);
     }
+  };
 
-    const savedCompletedQuestions = localStorage.getItem(
-      localStorageCheckboxKey
-    );
-    if (savedCompletedQuestions) {
-      setCompletedQuestions(JSON.parse(savedCompletedQuestions)); // Load checkbox state
-    }
-  }, [localStorageKey, localStorageCheckboxKey]); // Runs when the topic changes
-
-  // Save to localStorage when markedQuestions state changes
-  useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(markedQuestions));
-  }, [markedQuestions, localStorageKey]);
-
-  useEffect(() => {
-    localStorage.setItem(
-      localStorageCheckboxKey,
-      JSON.stringify(completedQuestions)
-    );
-  }, [completedQuestions, localStorageCheckboxKey]);
-
-  // Handle star click
   const handleStarClick = (id) => {
     if (isLoggedIn) {
+      const newState = !markedQuestions[id];
       setMarkedQuestions((prevState) => ({
         ...prevState,
-        [id]: !prevState[id], // Toggle the state for that specific question
+        [id]: newState,
       }));
+
+      saveStateToBackend(id, newState, completedQuestions[id]);
     } else {
       navigate("/login");
       toast.error("Please login first");
     }
   };
 
-  // Handle checkbox toggle
   const handleCheckboxClick = (id) => {
     if (isLoggedIn) {
+      const newState = !completedQuestions[id];
       setCompletedQuestions((prevState) => ({
         ...prevState,
-        [id]: !prevState[id], // Toggle the checkbox for that specific question
+        [id]: newState,
       }));
+
+      saveStateToBackend(id, markedQuestions[id], newState);
+      setAnswerCount((prev) => prev + 1);
     } else {
       navigate("/login");
       toast.error("Please login first");
     }
+  };
+
+  const searchQuestion = async (val) => {
+    const searchQues = await axios.get(
+      `http://localhost:8000/api/questions/get-${topic}-questions`
+    );
+
+    const ldata = searchQues.data;
+    const fdata = [];
+
+    ldata.map((li) => {
+      if (li.question.toLowerCase().includes(val)) {
+        fdata.push(li);
+        setQues(fdata);
+      }
+    });
   };
 
   return (
@@ -162,6 +198,28 @@ const TopicQuesTemplate = () => {
         <div className="px-4 sm:px-5 md:px-14">
           <Navbar />
         </div>
+
+        <div className="px-4 sm:px-5 md:px-14 py-6">
+          {/* Serach Box */}
+          <div className="flex md:flex-row flex-col gap-6">
+            <input
+              type="search"
+              className="inline-block py-2 px-6 w-full md:w-[90%] bg-transparent border rounded-md outline-none placeholder:text-slate-400 placeholder:font-medium"
+              value={searchQues}
+              placeholder="Eg: reverse"
+              onChange={(e) => setSearchQues(e.target.value)}
+            />
+            <div className="flex items-center justify-center">
+              <button
+                className="inline-block border-[2px] px-2 md:py-1 rounded-md text-lg font-semibold hover:text-zinc-950 hover:bg-[#ffbd25] transition-all duration-150 xxs:w-[30%] md:w-[100%]"
+                onClick={() => searchQuestion(searchQues)}
+              >
+                Search
+              </button>
+            </div>
+          </div>
+        </div>
+        
         {!loading ? (
           <div className="px-4 sm:px-5 md:px-14 py-6 relative">
             <div className="w-full bg-[#333] overflow-x-scroll lg:overflow-x-hidden">

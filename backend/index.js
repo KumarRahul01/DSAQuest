@@ -3,9 +3,9 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import { connectDB } from './config/database.js';
-import apiRoutes from "./routes/api.routes.js";
+import questionsPathRoutes from "./routes/questionsPath.routes.js";
 import noteRoutes from "./routes/notes.routes.js";
-import isCheckedRoutes from "./routes/isChecked.routes.js";
+import questionStateRoutes from './routes/questionState.routes.js';
 
 dotenv.config();
 
@@ -17,13 +17,13 @@ app.use(cors());
 app.use(express.json());   // To parse incoming JSON requests
 
 // API Routes
-app.use("/api/questions", apiRoutes);
+app.use("/api/questions", questionsPathRoutes);
 
 // Note Routes
 app.use("/api", noteRoutes);
 
 // Check Status Routes
-app.use("/api", isCheckedRoutes);
+app.use("/api", questionStateRoutes);
 
 
 // Database Connection
