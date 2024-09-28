@@ -235,7 +235,7 @@ const Register = () => {
                           type={!show ? "password" : "text"}
                           name="password"
                           id="password"
-                          placeholder="******"
+                          placeholder="Password"
                           value={password}
                           onChange={(e) => passwordHandler(e)}
                           required

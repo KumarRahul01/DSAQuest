@@ -167,6 +167,7 @@ const TopicQuesTemplate = () => {
       }));
 
       saveStateToBackend(id, markedQuestions[id], newState);
+      setAnswerCount((prev) => prev + 1);
     } else {
       navigate("/login");
       toast.error("Please login first");
