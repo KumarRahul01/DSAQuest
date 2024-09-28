@@ -1,5 +1,5 @@
 import express from "express";
-import {backtrackingQuestions, get2darraysquestions, getArraysQuestions, getStringsQuestions, greedyQuestions, linkedListQuestions, searchingSortingQuestions, stackNQueuesQuestions} from "../controllers/path.controllers.js"
+import {backtrackingQuestions, get2darraysquestions, getArraysQuestions, getStringsQuestions, greedyQuestions, linkedListQuestions, searchingSortingQuestions, stackNQueuesQuestions} from "../controllers/questionsPath.controllers.js"
 
 const router = express.Router();
 
