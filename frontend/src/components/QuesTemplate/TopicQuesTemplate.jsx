@@ -50,6 +50,8 @@ const TopicQuesTemplate = () => {
   // State to track checkbox completion for each question
   const [completedQuestions, setCompletedQuestions] = useState({});
 
+  const userId = JSON.parse(localStorage.getItem("userId"));
+
   useEffect(() => {
     setLoading(true);
     const fetchQuestions = async () => {
@@ -99,57 +101,72 @@ const TopicQuesTemplate = () => {
     }
   };
 
-  // Generate a unique key for localStorage using the topic
-  const localStorageKey = `markedQuestions_${topic}`;
-  const localStorageCheckboxKey = `completedQuestions_${topic}`;
-
-  // Load marked questions from localStorage on component mount
+  // Fetch the question states when component mounts
   useEffect(() => {
-    const savedMarkedQuestions = localStorage.getItem(localStorageKey);
-    if (savedMarkedQuestions) {
-      setMarkedQuestions(JSON.parse(savedMarkedQuestions)); // Load saved state
+    const fetchState = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/getState/${topic}/${userId}`
+        );
+        const data = response.data;
+
+        const marked = {};
+        const completed = {};
+
+        data.forEach((question) => {
+          marked[question.questionId] = question.isMarkedForRevision;
+          completed[question.questionId] = question.isCompleted;
+        });
+
+        setMarkedQuestions(marked);
+        setCompletedQuestions(completed);
+      } catch (err) {
+        console.error("Error fetching question state:", err);
+      }
+    };
+
+    fetchState();
+  }, [topic, userId]);
+
+  // Save state to backend when user interacts with stars/checkboxes
+  const saveStateToBackend = async (id, isMarked, isCompleted) => {
+    try {
+      await axios.post("http://localhost:8000/api/saveState", {
+        userId,
+        topic,
+        questionId: id,
+        isMarkedForRevision: isMarked,
+        isCompleted: isCompleted,
+      });
+    } catch (err) {
+      console.error("Error saving state:", err);
     }
+  };
 
-    const savedCompletedQuestions = localStorage.getItem(
-      localStorageCheckboxKey
-    );
-    if (savedCompletedQuestions) {
-      setCompletedQuestions(JSON.parse(savedCompletedQuestions)); // Load checkbox state
-    }
-  }, [localStorageKey, localStorageCheckboxKey]); // Runs when the topic changes
-
-  // Save to localStorage when markedQuestions state changes
-  useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(markedQuestions));
-  }, [markedQuestions, localStorageKey]);
-
-  useEffect(() => {
-    localStorage.setItem(
-      localStorageCheckboxKey,
-      JSON.stringify(completedQuestions)
-    );
-  }, [completedQuestions, localStorageCheckboxKey]);
-
-  // Handle star click
   const handleStarClick = (id) => {
     if (isLoggedIn) {
+      const newState = !markedQuestions[id];
       setMarkedQuestions((prevState) => ({
         ...prevState,
-        [id]: !prevState[id], // Toggle the state for that specific question
+        [id]: newState,
       }));
+
+      saveStateToBackend(id, newState, completedQuestions[id]);
     } else {
       navigate("/login");
       toast.error("Please login first");
     }
   };
 
-  // Handle checkbox toggle
   const handleCheckboxClick = (id) => {
     if (isLoggedIn) {
+      const newState = !completedQuestions[id];
       setCompletedQuestions((prevState) => ({
         ...prevState,
-        [id]: !prevState[id], // Toggle the checkbox for that specific question
+        [id]: newState,
       }));
+
+      saveStateToBackend(id, markedQuestions[id], newState);
     } else {
       navigate("/login");
       toast.error("Please login first");

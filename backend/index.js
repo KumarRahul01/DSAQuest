@@ -5,7 +5,7 @@ import cors from 'cors';
 import { connectDB } from './config/database.js';
 import apiRoutes from "./routes/api.routes.js";
 import noteRoutes from "./routes/notes.routes.js";
-import isCheckedRoutes from "./routes/isChecked.routes.js";
+import questionStateRoutes from './routes/questionState.routes.js';
 
 dotenv.config();
 
@@ -23,7 +23,7 @@ app.use("/api/questions", apiRoutes);
 app.use("/api", noteRoutes);
 
 // Check Status Routes
-app.use("/api", isCheckedRoutes);
+app.use("/api", questionStateRoutes);
 
 
 // Database Connection
