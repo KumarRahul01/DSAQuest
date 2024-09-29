@@ -10,30 +10,31 @@ import TopicQuesTemplate from "./components/QuesTemplate/TopicQuesTemplate";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 
 const App = () => {
-  const [user, setUser] = useState(null); // Store logged-in user
-  const [redirecting, setRedirecting] = useState(false); // Track redirection
-
-  // useEffect(() => {
-  //   auth.onAuthStateChanged((user) => {
-  //     setUser(user);
-  //   });
-  // }, []);
-
-    // Monitor authentication state
-    useEffect(() => {
-      const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-        setUser(currentUser); // Set the user if logged in
-      });
-      return () => unsubscribe();
-    }, []);
-  
+  const [user, setUser] = useState([]); // Store logged-in user
+  // const [user, setUser] = useState(null); // Store logged-in user solns by chatgpt
+  // const [redirecting, setRedirecting] = useState(false); // Track redirection
 
   useEffect(() => {
-    if (user && redirecting) {
-      // Show toast notification when redirecting due to login
-      toast.success("You are already logged in! Redirecting to home...");
-    }
-  }, [user, redirecting]);
+    auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+  }, []);
+
+    // Monitor authentication state
+    // useEffect(() => {
+    //   const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+    //     setUser(currentUser); // Set the user if logged in
+    //   });
+    //   return () => unsubscribe();
+    // }, []);
+  
+
+  // useEffect(() => {
+  //   if (user && redirecting) {
+  //     // Show toast notification when redirecting due to login
+  //     toast.success("You are already logged in! Redirecting to home...");
+  //   }
+  // }, [user, redirecting]);
 
   return (
     <>
@@ -58,18 +59,18 @@ const App = () => {
         <Route path="*" element={<NotFoundPage />} />
 
         {/* Login page */}
-        {/* <Route
+        <Route
           path="/login"
           element={user ? <Navigate to={"/"} /> : <Login />}
-        /> */}
+        />
 
         {/* Login route with redirection if user is logged in */}
-        <Route
+        {/* <Route
           path="/login"
           element={
             user ? setRedirecting(true) || <Navigate to="/" /> : <Login />
           }
-        />
+        /> */}
 
         {/* Register Page */}
         <Route path="/register" element={<Register />} />
