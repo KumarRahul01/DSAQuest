@@ -43,46 +43,6 @@ const Register = () => {
     setConfirmPassword(e.target.value);
   };
 
-  // let downloadURL;
-  // let userImage;
-
-  // async function handleImageChange(e) {
-  //   userImage = e.target.files[0];
-
-  //   if (userImage) {
-  //     setImage(e.target.files[0]);
-  //     const storage = getStorage(app);
-  //     const storageRef = ref(storage, "images/" + userImage.name);
-  //     await uploadBytes(storageRef, userImage);
-  //     downloadURL = await getDownloadURL(storageRef);
-  //     console.log(downloadURL);
-  //   }
-  // }
-
-  // const SignUpAuthentication = async () => {
-  //   console.log(downloadURL);
-
-  //   try {
-  //     createUserWithEmailAndPassword(auth, email, password);
-  //     const user = auth.currentUser;
-  //     const uid = user.uid; // This is the unique user ID
-  //     localStorage.setItem("userId", JSON.stringify(uid));
-  //     if (user) {
-  //       setDoc(doc(db, "Users", user.uid), {
-  //         fullname,
-  //         email,
-  //         photo: downloadURL,
-  //         userId: uid,
-  //       });
-  //     }
-  //     toast.success("User Registered Successfully!");
-  //     console.log(user);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     toast.error("Error in signing up");
-  //   }
-  // };
-
   const SignUpAuthentication = async () => {
     setLoading(true);
     try {
