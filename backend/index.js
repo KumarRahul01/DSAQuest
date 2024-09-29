@@ -35,7 +35,7 @@ connectDB().catch((err) => {
 
 // Home Route
 app.get('/', (req, res) => {
-  res.send('Welcome to the database')
+  res.json({ message: 'Welcome to the database' });
 })
 
 // 404 Handling for undefined routes
