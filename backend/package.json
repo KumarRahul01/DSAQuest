@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "vercel-build": "npm run build"
+    "build": "npm run vercel-build"
   },
   "keywords": [],
   "author": "",
