@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());   // To parse incoming JSON requests
 
 // API Routes
-app.use("/api/questions", questionsPathRoutes);
+app.use("/api", questionsPathRoutes);
 
 // Note Routes
 app.use("/api", noteRoutes);
