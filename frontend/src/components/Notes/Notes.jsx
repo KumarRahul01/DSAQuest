@@ -22,7 +22,7 @@ const Notes = ({ setShowNotes, noteVal }) => {
       note: notesDesc,
     };
     await axios
-      .post("http://localhost:8000/api/savenote", finalNotes, {
+      .post("https://dsa-quest-api.vercel.app/api/savenote", finalNotes, {
         headers: {
           // Authorization: `Bearer ${localStorage.getItem("token")}`, // If using JWT for authentication
           "Content-Type": "application/json", // Ensure the content type is correct

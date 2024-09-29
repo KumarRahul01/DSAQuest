@@ -8,7 +8,7 @@ const TopicCard = ({ tag, path }) => {
 
   useEffect(()=>{
     axios
-      .get(`http://localhost:8000/api/questions/get-${path}-questions`)
+      .get(`https://dsa-quest-api.vercel.app/api/questions/get-${path}-questions`)
       .then((res) => {
         setTotalQues(res.data.length)
       })
