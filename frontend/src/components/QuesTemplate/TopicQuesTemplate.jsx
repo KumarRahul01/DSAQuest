@@ -61,7 +61,7 @@ const TopicQuesTemplate = () => {
     setLoading(true);
     const fetchQuestions = async () => {
       axios
-        .get(`http://localhost:8000/api/questions/get-${topic}-questions`)
+        .get(`http://localhost:8000/api/get-${topic}-questions`)
         .then((res) => {
           // Sort by quesId in ascending order
           const sortedQuestions = res.data.sort((a, b) => a.quesId - b.quesId);
