@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 
-const api = import.meta.env.VITE_GOOGLE_API;
+const api = `${import.meta.env.VITE_GOOGLE_API}`;
 
 
 // Your web app's Firebase configuration
