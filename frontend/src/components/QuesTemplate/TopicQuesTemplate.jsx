@@ -52,7 +52,6 @@ const TopicQuesTemplate = () => {
   const [completedQuestions, setCompletedQuestions] = useState({});
   // Total questions
   const [totalQues, setTotalQues] = useState(0);
-  const [totalSolvedQues, setTotalSolvedQues] = useState(0);
 
   const userId = JSON.parse(localStorage.getItem("userId"));
 
@@ -173,10 +172,8 @@ const TopicQuesTemplate = () => {
         ...prevState,
         [id]: newState,
       }));
-
       saveStateToBackend(id, markedQuestions[id], newState);
       setAnswerCount((prev) => prev + 1);
-      setTotalSolvedQues((prev) => prev + 1);
     } else {
       navigate("/login");
       toast.error("Please login first");
