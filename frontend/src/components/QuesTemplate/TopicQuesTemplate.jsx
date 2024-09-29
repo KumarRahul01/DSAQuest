@@ -93,7 +93,7 @@ const TopicQuesTemplate = () => {
       setShowNotes(true);
 
       await axios
-        .get(`http://localhost:8000/api/getnote`, {
+        .get(`https://dsa-quest-api.vercel.app/api/getnote`, {
           params: { quesId: questionId, userId, tag: tagName },
         })
         .then((res) => {
@@ -114,7 +114,7 @@ const TopicQuesTemplate = () => {
     const fetchState = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/getState/${topic}/${userId}`
+          `https://dsa-quest-api.vercel.app/api/getState/${topic}/${userId}`
         );
         const data = response.data;
 
@@ -139,7 +139,7 @@ const TopicQuesTemplate = () => {
   // Save state to backend when user interacts with stars/checkboxes
   const saveStateToBackend = async (id, isMarked, isCompleted) => {
     try {
-      await axios.post("http://localhost:8000/api/saveState", {
+      await axios.post("https://dsa-quest-api.vercel.app/api/saveState", {
         userId,
         topic,
         questionId: id,

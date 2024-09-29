@@ -5,7 +5,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { auth } from "./firebase/firebase";
-import Profile from "./components/userProfile/Profile";
+import Profile from "./components/UserProfile/Profile";
 import TopicQuesTemplate from "./components/QuesTemplate/TopicQuesTemplate";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 
