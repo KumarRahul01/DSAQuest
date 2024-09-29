@@ -45,22 +45,28 @@ const TopicQuesTemplate = () => {
   const [ques, setQues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [noteVal, setNoteVal] = useState("");
+
   // State to track which questions are marked for revision
   const [markedQuestions, setMarkedQuestions] = useState({});
   // State to track checkbox completion for each question
   const [completedQuestions, setCompletedQuestions] = useState({});
-  // search questions
-  const [searchQues, setSearchQues] = useState("");
+  // Total questions
+  const [totalQues, setTotalQues] = useState(0);
+  const [totalSolvedQues, setTotalSolvedQues] = useState(0);
 
   const userId = JSON.parse(localStorage.getItem("userId"));
 
+  // Fetch questions on component mount
   useEffect(() => {
     setLoading(true);
     const fetchQuestions = async () => {
       axios
         .get(`http://localhost:8000/api/questions/get-${topic}-questions`)
         .then((res) => {
-          setQues(res.data);
+          // Sort by quesId in ascending order
+          const sortedQuestions = res.data.sort((a, b) => a.quesId - b.quesId);
+          setQues(sortedQuestions);
+          setTotalQues(sortedQuestions.length);
         })
         .catch((err) => console.log(err));
     };
@@ -170,26 +176,11 @@ const TopicQuesTemplate = () => {
 
       saveStateToBackend(id, markedQuestions[id], newState);
       setAnswerCount((prev) => prev + 1);
+      setTotalSolvedQues((prev) => prev + 1);
     } else {
       navigate("/login");
       toast.error("Please login first");
     }
-  };
-
-  const searchQuestion = async (val) => {
-    const searchQues = await axios.get(
-      `http://localhost:8000/api/questions/get-${topic}-questions`
-    );
-
-    const ldata = searchQues.data;
-    const fdata = [];
-
-    ldata.map((li) => {
-      if (li.question.toLowerCase().includes(val)) {
-        fdata.push(li);
-        setQues(fdata);
-      }
-    });
   };
 
   return (
@@ -199,27 +190,16 @@ const TopicQuesTemplate = () => {
           <Navbar />
         </div>
 
-        <div className="px-4 sm:px-5 md:px-14 py-6">
-          {/* Serach Box */}
-          <div className="flex md:flex-row flex-col gap-6">
-            <input
-              type="search"
-              className="inline-block py-2 px-6 w-full md:w-[90%] bg-transparent border rounded-md outline-none placeholder:text-slate-400 placeholder:font-medium"
-              value={searchQues}
-              placeholder="Eg: reverse"
-              onChange={(e) => setSearchQues(e.target.value)}
-            />
-            <div className="flex items-center justify-center">
-              <button
-                className="inline-block border-[2px] px-2 md:py-1 rounded-md text-lg font-semibold hover:text-zinc-950 hover:bg-[#ffbd25] transition-all duration-150 xxs:w-[30%] md:w-[100%]"
-                onClick={() => searchQuestion(searchQues)}
-              >
-                Search
-              </button>
-            </div>
-          </div>
-        </div>
-        
+        {/* Total Question Solved */}
+        {/* <div className="px-4 sm:px-5 md:px-14 py-6 text-center">
+          <h1 className="lg:text-2xl font-medium">
+            Total Question Solved:{" "}
+            <span className="text-[#ffbd25]">
+              {totalSolvedQues} / {totalQues}
+            </span>
+          </h1>
+        </div> */}
+
         {!loading ? (
           <div className="px-4 sm:px-5 md:px-14 py-6 relative">
             <div className="w-full bg-[#333] overflow-x-scroll lg:overflow-x-hidden">
