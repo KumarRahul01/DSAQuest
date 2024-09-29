@@ -13,19 +13,21 @@ const Profile = () => {
 
   const { isLoggedIn } = useContext(LoginContext);
   const { answerCount } = useContext(AnswerCount);
-  console.log(isLoggedIn);
 
   const [userDetails, setUserDetails] = useState(null);
 
   const fetchData = async () => {
     auth.onAuthStateChanged(async (user) => {
-      const docRef = doc(db, "Users", user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        // console.log(docSnap.data());
-        setUserDetails(docSnap.data());
+      if (user) {
+        const docRef = doc(db, "Users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setUserDetails(docSnap.data());
+        } else {
+          console.log("No such document!");
+        }
       } else {
-        console.log("User not logged In!");
+        console.log("User not logged in!");
       }
     });
   };
@@ -40,7 +42,7 @@ const Profile = () => {
     }
   };
 
-  const redirectHome = () => {
+  const redirectLogin = () => {
     navigate("/login");
   };
 
@@ -55,11 +57,11 @@ const Profile = () => {
       </div>
       {userDetails ? (
         <div className="flex flex-col justify-center items-center w-full h-full">
-          <div className="lg:w-[420px] xxs:w-[300px] xs:w-[340px] bg-zinc-700 rounded-md flex justify-center flex-col items-center p-6 lg:px-6 my-20">
+          <div className="lg:w-[420px] xxs:w-[300px] xs:w-[340px] bg-zinc-700 rounded-md flex justify-center flex-col items-center p-6 lg:px-6 my-20 overflow-hidden">
             <div className="overflow-hidden">
               <img
-                className="w-20 h-20 rounded-full"
-                src={avatar || userDetails.photo}
+                className="w-32 h-32 rounded-full object-cover"
+                src={userDetails.photo || avatar}
                 alt="profile-pic"
               />
             </div>
@@ -111,7 +113,7 @@ const Profile = () => {
                 <span className="loader"></span>
                 <button
                   className="mt-5 border-[3px] px-10 py-2 rounded-md text-lg font-semibold hover:text-zinc-950 hover:bg-[#eee] transition-all duration-150"
-                  onClick={redirectHome}
+                  onClick={redirectLogin}
                 >
                   Login Now
                 </button>

@@ -190,14 +190,15 @@ const TopicQuesTemplate = () => {
           <Navbar />
         </div>
 
-        <div className="px-4 sm:px-5 md:px-14 py-6 text-center">
+        {/* Total Question Solved */}
+        {/* <div className="px-4 sm:px-5 md:px-14 py-6 text-center">
           <h1 className="lg:text-2xl font-medium">
             Total Question Solved:{" "}
             <span className="text-[#ffbd25]">
               {totalSolvedQues} / {totalQues}
             </span>
           </h1>
-        </div>
+        </div> */}
 
         {!loading ? (
           <div className="px-4 sm:px-5 md:px-14 py-6 relative">
