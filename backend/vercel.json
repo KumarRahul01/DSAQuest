@@ -12,7 +12,7 @@
       "destination": "index.js"
     },
     {
-      "source": "/(.*)",
+      "source": "https://dsa-quest.vercel.app/(.*)",
       "destination": "index.html"
     }
   ]
