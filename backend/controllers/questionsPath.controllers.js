@@ -1,4 +1,4 @@
-import { arrayquesModel, backtrackingQuesModel, greedyQuesModel, linkedListQuesModel, searchingSortingQuesModel, stackNQueuesQuesModel, stringQuesModel, twoDarrayQuesModel } from "../models/questionsPath.model.js";
+import { arrayquesModel, backtrackingQuesModel, binarySearchTreeQuesModel, binaryTreesQuesModel, bitManipulationQuesModel, dpQuesModel, graphQuesModel, greedyQuesModel, heapsAndHashingQuesModel, linkedListQuesModel, searchingSortingQuesModel, segmentTreesQuesModel, stackNQueuesQuesModel, stringQuesModel, triesQuesModel, twoDarrayQuesModel } from "../models/questionsPath.model.js";
 
 export const getArraysQuestions = async (req, res) => {
   try {
@@ -84,4 +84,76 @@ export const greedyQuestions = async (req, res) => {
   }
 }
 
-// module.exports = {getArrayQuestions}
+//updated
+
+export const binaryTreesQuestions = async (req, res) => {
+  try {
+    const ans = await binaryTreesQuesModel.find();
+    res.status(200).json(ans);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const binarySearchTreeQuestions = async (req, res) => {
+  try {
+    const ans = await binarySearchTreeQuesModel.find();
+    res.status(200).json(ans);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const heapsAndHashingQuestions = async (req, res) => {
+  try {
+    const ans = await heapsAndHashingQuesModel.find();
+    res.status(200).json(ans);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const graphQuestions = async (req, res) => {
+  try {
+    const ans = await graphQuesModel.find();
+    res.status(200).json(ans);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const triesQuestions = async (req, res) => {
+  try {
+    const ans = await triesQuesModel.find();
+    res.status(200).json(ans);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const dpQuestions = async (req, res) => {
+  try {
+    const ans = await dpQuesModel.find();
+    res.status(200).json(ans);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const bitManipulationQuestions = async (req, res) => {
+  try {
+    const ans = await bitManipulationQuesModel.find();
+    res.status(200).json(ans);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const segmentTreesQuestions = async (req, res) => {
+  try {
+    const ans = await segmentTreesQuesModel.find();
+    res.status(200).json(ans);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}

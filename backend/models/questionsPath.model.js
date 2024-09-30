@@ -42,3 +42,21 @@ export const linkedListQuesModel = mongoose.model("linkedListQuestions", questio
 export const stackNQueuesQuesModel = mongoose.model("stackNQueuesQuestions", questionSchema);
 
 export const greedyQuesModel = mongoose.model("greedyQuestions", questionSchema);
+
+// updated
+
+export const binaryTreesQuesModel = mongoose.model("binaryTreesQuestions", questionSchema);
+
+export const binarySearchTreeQuesModel = mongoose.model("binarySearchTreeQuestions", questionSchema);
+
+export const heapsAndHashingQuesModel = mongoose.model("heapsAndHashingQuestions", questionSchema);
+
+export const graphQuesModel = mongoose.model("graphQuestions", questionSchema);
+
+export const triesQuesModel = mongoose.model("triesQuestions", questionSchema);
+
+export const dpQuesModel = mongoose.model("dpQuestions", questionSchema);
+
+export const bitManipulationQuesModel = mongoose.model("bitManipulationQuestions", questionSchema);
+
+export const segmentTreesQuesModel = mongoose.model("segmentTreesQuestions", questionSchema);
