@@ -73,7 +73,7 @@ const Login = () => {
             <Navbar />
           </div>
           <div className="min-h-screen flex justify-center items-center">
-            <span class="loader"></span>
+            <span className="loader"></span>
           </div>
         </div>
       ) : (
