@@ -3,7 +3,7 @@ import { IoAddCircleSharp } from "react-icons/io5";
 import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
 import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
+import { json, useNavigate, useParams } from "react-router-dom";
 import { AnswerCount } from "../contexts/AnswerCount";
 import Notes from "../Notes/Notes";
 import axios from "axios";
@@ -58,8 +58,6 @@ const TopicQuesTemplate = () => {
   const [markedQuestions, setMarkedQuestions] = useState({});
   // State to track checkbox completion for each question
   const [completedQuestions, setCompletedQuestions] = useState({});
-  // Total questions
-  const [totalQues, setTotalQues] = useState(0);
 
   const userId = JSON.parse(localStorage.getItem("userId"));
 
@@ -73,13 +71,11 @@ const TopicQuesTemplate = () => {
           // Sort by quesId in ascending order
           const sortedQuestions = res.data.sort((a, b) => a.quesId - b.quesId);
           setQues(sortedQuestions);
-          setTotalQues(sortedQuestions.length);
+          setLoading(false);
         })
         .catch((err) => console.log(err));
     };
     fetchQuestions();
-
-    setLoading(false);
   }, []);
 
   const displayNotes = async (ques) => {
@@ -320,7 +316,7 @@ const TopicQuesTemplate = () => {
             )}
           </div>
         ) : (
-          <div className="min-h-screen flex justify-center items-center">
+          <div className="mt-60 flex justify-center items-center">
             <span className="loader"></span>
           </div>
         )}
