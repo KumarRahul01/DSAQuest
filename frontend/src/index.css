@@ -87,7 +87,6 @@ body {
 .main-nav2 a {
   padding-inline: 20px;
   font-size: 17px;
-  text-transform: uppercase;
   font-weight: 600;
 }
 
@@ -95,7 +94,6 @@ body {
 .main-nav2 a:nth-child(4) {
   padding-inline: 10px;
   font-size: 22px;
-  text-transform: uppercase;
   font-weight: 600;
 }
 

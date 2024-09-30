@@ -4,10 +4,8 @@ import { Link } from "react-router-dom";
 
 const TopicCard = ({ tag, path }) => {
   const [totalQues, setTotalQues] = useState(0);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     const fetchAllQues = async () => {
       await axios
         .get(`https://dsa-quest-api.vercel.app/api/get-${path}-questions`)
@@ -18,39 +16,32 @@ const TopicCard = ({ tag, path }) => {
     };
 
     fetchAllQues();
-    setLoading(false);
   }, []);
 
   return (
     <>
-      {loading ? (
-        <div className="min-h-screen flex justify-center items-center">
-          <span class="loader"></span>
-        </div>
-      ) : (
-        <div
-          className={`w-[90%] xs:w-fit flex flex-col xs:flex-row justify-center items-center md:justify-normal gap-6 xs:gap-10 lg:gap-20 p-4 pb-6 xs:p-6 border-2 rounded-md bg-gradient-to-r from-pink-600 to-orange-600`}
-        >
-          <div>
-            <h2 className="w-full text-xl md:text-2xl font-semibold text-center xs:text-left">
-              {tag}
-            </h2>
+      <div
+        className={`w-[90%] xs:w-fit flex flex-col xs:flex-row justify-center items-center md:justify-normal gap-6 xs:gap-10 lg:gap-20 p-4 pb-6 xs:p-6 border-2 rounded-md bg-gradient-to-r from-pink-600 to-orange-600`}
+      >
+        <div>
+          <h2 className="w-full text-xl md:text-2xl font-semibold text-center xs:text-left">
+            {tag}
+          </h2>
 
-            <h4 className="my-3 font-medium">
-              Total Questions: <span>{totalQues}</span>
-            </h4>
-          </div>
-
-          <div>
-            <Link
-              to={`/apna-college/${path}`}
-              className="border-[3px] p-2 rounded-md font-semibold hover:text-zinc-950 hover:bg-[#ffbd25] hover:border-[#ffbd25] transition-all duration-150"
-            >
-              Start Now
-            </Link>
-          </div>
+          <h4 className="my-3 font-medium">
+            Total Questions: <span>{totalQues}</span>
+          </h4>
         </div>
-      )}
+
+        <div>
+          <Link
+            to={`/apna-college/${path}`}
+            className="border-[3px] p-2 rounded-md font-semibold hover:text-zinc-950 hover:bg-[#ffbd25] hover:border-[#ffbd25] transition-all duration-150"
+          >
+            Start Now
+          </Link>
+        </div>
+      </div>
     </>
   );
 };

@@ -34,7 +34,10 @@ const LandingTemplate = ({ title, instructor }) => {
 
             {/* updated */}
             <TopicCard tag={"Binary Trees"} path={"binary-trees"} />
-            <TopicCard tag={"Binary Search Trees"} path={"binary-search-trees"} />
+            <TopicCard
+              tag={"Binary Search Trees"}
+              path={"binary-search-trees"}
+            />
             <TopicCard tag={"Heaps & Hashing"} path={"heaps-and-hashing"} />
             <TopicCard tag={"Graphs"} path={"graphs"} />
             <TopicCard tag={"Tries"} path={"tries"} />

@@ -8,6 +8,7 @@ import { auth } from "./firebase/firebase";
 import Profile from "./components/userProfile/Profile";
 import TopicQuesTemplate from "./components/QuesTemplate/TopicQuesTemplate";
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
+import About from "./pages/About";
 
 const App = () => {
   const [user, setUser] = useState([]); // Store logged-in user
@@ -20,14 +21,13 @@ const App = () => {
     });
   }, []);
 
-    // Monitor authentication state
-    // useEffect(() => {
-    //   const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-    //     setUser(currentUser); // Set the user if logged in
-    //   });
-    //   return () => unsubscribe();
-    // }, []);
-  
+  // Monitor authentication state
+  // useEffect(() => {
+  //   const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+  //     setUser(currentUser); // Set the user if logged in
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
 
   // useEffect(() => {
   //   if (user && redirecting) {
@@ -51,7 +51,7 @@ const App = () => {
             />
           }
         />
-        
+
         {/* dyanmic routing */}
         <Route path="/apna-college/:topic" element={<TopicQuesTemplate />} />
 
@@ -77,6 +77,9 @@ const App = () => {
 
         {/* Profile Page */}
         <Route path="/profile" element={<Profile />} />
+
+        {/* About Page */}
+        <Route path="/about" element={<About />} />
       </Routes>
     </>
   );

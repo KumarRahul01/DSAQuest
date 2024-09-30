@@ -1,6 +1,11 @@
 import React from "react";
-import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
-import { MdAttachEmail, MdOutlineMailOutline } from "react-icons/md";
+import {
+  FaGithub,
+  FaInstagram,
+  FaLinkedin,
+  FaInfoCircle,
+} from "react-icons/fa";
+import { IoIosMail } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -18,43 +23,36 @@ const Footer = () => {
         </p>
       </div>
       <div>
-        <div className="flex space-x-4">
+        <div className="flex items-center space-x-4">
           <Link
             to="https://github.com/KumarRahul01"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaGithub
-              className="text-white text-2xl
-                            hover:text-gray-300"
-            />
+            <FaGithub className="text-white text-2xl hover:text-[#ffbd25]" />
+          </Link>
+          <Link to="/about" rel="noopener noreferrer">
+            <FaInfoCircle className="text-white text-2xl hover:text-[#ffbd25]" />
           </Link>
           <Link
             to="mailto:kumarrahul.chandra2002@gmail.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <MdOutlineMailOutline
-              size={"1.65rem"}
-              className="text-white text-2xl
-                            hover:text-gray-300"
+            <IoIosMail
+              size={"1.85rem"}
+              className="text-white text-2xl hover:text-[#ffbd25]"
             />
           </Link>
           <Link to="#" target="_blank" rel="noopener noreferrer">
-            <FaInstagram
-              className="text-white text-2xl
-                            hover:text-gray-300"
-            />
+            <FaInstagram className="text-white text-2xl hover:text-[#ffbd25]" />
           </Link>
           <Link
             to="https://linkedin.com/in/rahul-kumar-chandra"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaLinkedin
-              className="text-white text-2xl
-                            hover:text-gray-300"
-            />
+            <FaLinkedin className="text-white text-2xl hover:text-[#ffbd25]" />
           </Link>
         </div>
       </div>

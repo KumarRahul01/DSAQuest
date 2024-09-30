@@ -21,6 +21,14 @@ const validParams = [
   "linked-list",
   "stack-and-queues",
   "greedy",
+  "binary-trees",
+  "binary-search-trees",
+  "heaps-and-hashing",
+  "graphs",
+  "tries",
+  "dp",
+  "bit-manipulation",
+  "segment-trees",
 ];
 
 const TopicQuesTemplate = () => {
