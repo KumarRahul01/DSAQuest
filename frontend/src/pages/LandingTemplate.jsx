@@ -16,7 +16,7 @@ const LandingTemplate = ({ title, instructor }) => {
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold tracking-wide mt-14">
               {`Welcome to ${title} DSA Sheet`}
             </h1>
-            <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold tracking-wide mt-4">{`By - ${instructor}`}</h1>
+            {/* <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold tracking-wide mt-4">{`By - ${instructor}`}</h1> */}
           </div>
 
           <div className="w-full h-fit flex items-center justify-center xs:items-start flex-wrap bg-rd-900 my-10 gap-10 xs:gap-10 lg:gap-24">
