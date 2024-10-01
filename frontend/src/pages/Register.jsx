@@ -43,48 +43,49 @@ const Register = () => {
     setConfirmPassword(e.target.value);
   };
 
-  const SignUpAuthentication = async () => {
-    setLoading(true);
-    try {
-      // Ensure the image is uploaded before proceeding
-      if (image) {
-        const storage = getStorage(app);
-        const storageRef = ref(storage, "images/" + image.name);
-        await uploadBytes(storageRef, image); // Upload the image
-        const downloadURL = await getDownloadURL(storageRef); // Get the image URL
-        console.log(downloadURL);
+  // for image
+  // const SignUpAuthentication = async () => {
+  //   setLoading(true);
+  //   try {
+  //     // Ensure the image is uploaded before proceeding
+  //     if (image) {
+  //       const storage = getStorage(app);
+  //       const storageRef = ref(storage, "images/" + image.name);
+  //       await uploadBytes(storageRef, image); // Upload the image
+  //       const downloadURL = await getDownloadURL(storageRef); // Get the image URL
+  //       console.log(downloadURL);
 
-        // Proceed with user creation only after getting the downloadURL
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-        const user = userCredential.user; // Get the created user
+  //       // Proceed with user creation only after getting the downloadURL
+  //       const userCredential = await createUserWithEmailAndPassword(
+  //         auth,
+  //         email,
+  //         password
+  //       );
+  //       const user = userCredential.user; // Get the created user
 
-        if (user) {
-          const uid = user.uid; // Get the user's unique ID
-          localStorage.setItem("userId", JSON.stringify(uid));
+  //       if (user) {
+  //         const uid = user.uid; // Get the user's unique ID
+  //         localStorage.setItem("userId", JSON.stringify(uid));
 
-          // Store user data in Firestore
-          await setDoc(doc(db, "Users", user.uid), {
-            fullname,
-            email,
-            photo: "", // Store the image URL in the database
-            userId: uid,
-          });
-          setLoading(false);
-          toast.success("User Registered Successfully!");
-          console.log(user);
-        }
-      } else {
-        toast.error("Please upload an image.");
-      }
-    } catch (error) {
-      console.log(error.message);
-      toast.error("Error in signing up");
-    }
-  };
+  //         // Store user data in Firestore
+  //         await setDoc(doc(db, "Users", user.uid), {
+  //           fullname,
+  //           email,
+  //           photo: "", // Store the image URL in the database
+  //           userId: uid,
+  //         });
+  //         setLoading(false);
+  //         toast.success("User Registered Successfully!");
+  //         console.log(user);
+  //       }
+  //     } else {
+  //       toast.error("Please upload an image.");
+  //     }
+  //   } catch (error) {
+  //     console.log(error.message);
+  //     toast.error("Error in signing up");
+  //   }
+  // };
 
   // Image change handler (unchanged)
   // const handleImageChange = (e) => {
@@ -93,6 +94,29 @@ const Register = () => {
   //     setImage(userImage); // Set the selected image
   //   }
   // };
+
+  // Without Photo Register
+  const SignUpAuthentication = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+      const uid = user.uid; // This is the unique user ID
+      localStorage.setItem("userId", JSON.stringify(uid));
+      if (user) {
+        setDoc(doc(db, "Users", user.uid), {
+          fullname,
+          email,
+          photo: "",
+          userId: uid,
+        });
+      }
+      toast.success("User Registered Successfully!");
+      console.log(user);
+    } catch (error) {
+      console.log(error.message);
+      toast.error("Error in signing up");
+    }
+  };
 
   const clearEntries = () => {
     setUsername("");
