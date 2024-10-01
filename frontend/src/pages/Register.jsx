@@ -27,7 +27,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
-  const fileInputRef = useRef(null);
+  // const fileInputRef = useRef(null);
 
   // Error Handling
   const [usernameError, setUsernameError] = useState(false);
@@ -70,7 +70,7 @@ const Register = () => {
           await setDoc(doc(db, "Users", user.uid), {
             fullname,
             email,
-            photo: downloadURL, // Store the image URL in the database
+            photo: "", // Store the image URL in the database
             userId: uid,
           });
           setLoading(false);
