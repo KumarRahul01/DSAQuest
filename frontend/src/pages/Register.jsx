@@ -87,12 +87,12 @@ const Register = () => {
   };
 
   // Image change handler (unchanged)
-  const handleImageChange = (e) => {
-    const userImage = e.target.files[0];
-    if (userImage) {
-      setImage(userImage); // Set the selected image
-    }
-  };
+  // const handleImageChange = (e) => {
+  //   const userImage = e.target.files[0];
+  //   if (userImage) {
+  //     setImage(userImage); // Set the selected image
+  //   }
+  // };
 
   const clearEntries = () => {
     setUsername("");
@@ -147,7 +147,7 @@ const Register = () => {
 
         {loading ? (
           <div className="min-h-screen flex justify-center items-center">
-            <span class="loader"></span>
+            <span className="loader"></span>
           </div>
         ) : (
           <div className="w-full mt-0 flex items-center justify-center">
@@ -330,7 +330,7 @@ const Register = () => {
                   </div>
 
                   {/* Image */}
-                  <div className="border rounded-sm flex gap-2 mb-6 p-2 cursor-pointer">
+                  {/* <div className="border rounded-sm flex gap-2 mb-6 p-2 cursor-pointer">
                     <FaImages className="text-zinc-400" size={"1.5rem"} />
                     <input
                       className="bg-transparent text-[#eee] cursor-pointer"
@@ -340,7 +340,7 @@ const Register = () => {
                       ref={fileInputRef}
                       required
                     />
-                  </div>
+                  </div> */}
 
                   {/* Submit */}
                   <div className="bg-[#ffbd25] h-10 flex justify-center mb-4 rounded-sm cursor-pointer font-medium tracking-wide">
