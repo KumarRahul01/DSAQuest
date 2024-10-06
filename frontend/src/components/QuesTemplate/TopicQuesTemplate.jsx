@@ -222,108 +222,121 @@ const TopicQuesTemplate = () => {
             <div className="w-full bg-[#333] overflow-x-scroll lg:overflow-x-hidden">
               {/* Tabel that contains questions */}
               <table>
-                <thead className="bg-[#ffbd50]">
-                  <tr>
-                    <th>Status</th>
-                    <th>S.No</th>
-                    <th>Difficulty</th>
-                    <th>
-                      <div className="w-[300px] lg:w-full flex items-center justify-center">
-                        <h3>Problem</h3>
-                      </div>
-                    </th>
-                    <th>Practice</th>
-                    <th>Note</th>
-                    <th>Revision</th>
-                  </tr>
-                </thead>
+                {filterData.length === 0 ? (
+                  <h1 className="text-2xl font-semibold text-center">
+                    Please enter a valid text
+                  </h1>
+                ) : (
+                  <thead className="bg-[#ffbd50]">
+                    <tr>
+                      <th>Status</th>
+                      <th>S.No</th>
+                      <th>Difficulty</th>
+                      <th>
+                        <div className="w-[300px] lg:w-full flex items-center justify-center">
+                          <h3>Problem</h3>
+                        </div>
+                      </th>
+                      <th>Practice</th>
+                      <th>Note</th>
+                      <th>Revision</th>
+                    </tr>
+                  </thead>
+                )}
 
                 <tbody className="text-center">
-                  {filterData.map((ques) => {
-                    return (
-                      <tr key={ques.quesId} className="">
-                        <td>
-                          <div>
-                            <input
-                              id="yellow-checkbox"
-                              type="checkbox"
-                              checked={!!completedQuestions[ques.quesId]} // Checkbox state
-                              onChange={() => handleCheckboxClick(ques.quesId)}
-                              className="w-6 h-6 cursor-pointer accent-[#ffbd25]"
-                            />
-                          </div>
-                        </td>
+                  {filterData.length === 0 ? (
+                    // Show Nothing
+                    <></>
+                  ) : (
+                    filterData.map((ques) => {
+                      return (
+                        <tr key={ques.quesId} className="">
+                          <td>
+                            <div>
+                              <input
+                                id="yellow-checkbox"
+                                type="checkbox"
+                                checked={!!completedQuestions[ques.quesId]} // Checkbox state
+                                onChange={() =>
+                                  handleCheckboxClick(ques.quesId)
+                                }
+                                className="w-6 h-6 cursor-pointer accent-[#ffbd25]"
+                              />
+                            </div>
+                          </td>
 
-                        <td>
-                          <h3>{ques.quesId}</h3>
-                        </td>
+                          <td>
+                            <h3>{ques.quesId}</h3>
+                          </td>
 
-                        <td>
-                          <div
-                            className={`flex justify-center items-center ${
-                              ques.difficulty === "Easy" ? "bg-green-500" : ""
-                            } ${
-                              ques.difficulty === "Medium"
-                                ? "bg-yellow-500"
-                                : ""
-                            } ${
-                              ques.difficulty === "Hard" ? "bg-red-500" : ""
-                            }  rounded-md p-1 font-medium`}
-                          >
-                            {ques.difficulty}
-                          </div>
-                        </td>
-
-                        <td>
-                          <div>
-                            <h3>{ques.question}</h3>
-                          </div>
-                        </td>
-
-                        <td>
-                          <div className="w-full">
-                            <a
-                              href={ques.link}
-                              target="_blank"
-                              className="hover:text-blue-500 text-blue-500 underline underline-offset-4 font-medium transition-all duration-150 hover:bg-slate-50 px-3 py-2 rounded-md hover:font-semibold"
+                          <td>
+                            <div
+                              className={`flex justify-center items-center ${
+                                ques.difficulty === "Easy" ? "bg-green-500" : ""
+                              } ${
+                                ques.difficulty === "Medium"
+                                  ? "bg-yellow-500"
+                                  : ""
+                              } ${
+                                ques.difficulty === "Hard" ? "bg-red-500" : ""
+                              }  rounded-md p-1 font-medium`}
                             >
-                              Link
-                            </a>
-                          </div>
-                        </td>
+                              {ques.difficulty}
+                            </div>
+                          </td>
 
-                        <td className="">
-                          <div
-                            className="w-full flex items-center justify-center"
-                            onClick={() => displayNotes(ques)}
-                          >
-                            <IoAddCircleSharp
-                              size={"1.5rem"}
-                              className="hover:text-[#ffbd25] cursor-pointer"
-                            />
-                          </div>
-                        </td>
+                          <td>
+                            <div>
+                              <h3>{ques.question}</h3>
+                            </div>
+                          </td>
 
-                        <td className="">
-                          <div className="w-full flex items-center justify-center">
-                            {markedQuestions[ques.quesId] ? (
-                              <FaStar
-                                size={"1.25rem"}
-                                style={{ color: "gold", cursor: "pointer" }}
-                                onClick={() => handleStarClick(ques.quesId)}
+                          <td>
+                            <div className="w-full">
+                              <a
+                                href={ques.link}
+                                target="_blank"
+                                className="hover:text-blue-500 text-blue-500 underline underline-offset-4 font-medium transition-all duration-150 hover:bg-slate-50 px-3 py-2 rounded-md hover:font-semibold"
+                              >
+                                Link
+                              </a>
+                            </div>
+                          </td>
+
+                          <td className="">
+                            <div
+                              className="w-full flex items-center justify-center"
+                              onClick={() => displayNotes(ques)}
+                            >
+                              <IoAddCircleSharp
+                                size={"1.5rem"}
+                                className="hover:text-[#ffbd25] cursor-pointer"
                               />
-                            ) : (
-                              <FaRegStar
-                                size={"1.25rem"}
-                                style={{ cursor: "pointer" }}
-                                onClick={() => handleStarClick(ques.quesId)}
-                              />
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                            </div>
+                          </td>
+
+                          <td className="">
+                            <div className="w-full flex items-center justify-center">
+                              {markedQuestions[ques.quesId] ? (
+                                <FaStar
+                                  size={"1.25rem"}
+                                  style={{ color: "gold", cursor: "pointer" }}
+                                  onClick={() => handleStarClick(ques.quesId)}
+                                />
+                              ) : (
+                                <FaRegStar
+                                  size={"1.25rem"}
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => handleStarClick(ques.quesId)}
+                                />
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
                 </tbody>
               </table>
             </div>
