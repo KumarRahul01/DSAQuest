@@ -46,20 +46,19 @@ const TopicQuesTemplate = () => {
     return <NotFoundPage />;
   }
 
+  const userId = JSON.parse(localStorage.getItem("userId"));
+
   const { isLoggedIn, user } = useContext(LoginContext);
   const { setAnswerCount } = useContext(AnswerCount);
 
   const [showNotes, setShowNotes] = useState(false);
   const [ques, setQues] = useState([]);
+  const [filterData, setFilterData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [noteVal, setNoteVal] = useState("");
-
-  // State to track which questions are marked for revision
   const [markedQuestions, setMarkedQuestions] = useState({});
-  // State to track checkbox completion for each question
   const [completedQuestions, setCompletedQuestions] = useState({});
-
-  const userId = JSON.parse(localStorage.getItem("userId"));
+  const [searchText, setSearchText] = useState("");
 
   // Fetch questions on component mount
   useEffect(() => {
@@ -71,6 +70,7 @@ const TopicQuesTemplate = () => {
           // Sort by quesId in ascending order
           const sortedQuestions = res.data.sort((a, b) => a.quesId - b.quesId);
           setQues(sortedQuestions);
+          setFilterData(sortedQuestions);
           setLoading(false);
         })
         .catch((err) => console.log(err));
@@ -184,22 +184,38 @@ const TopicQuesTemplate = () => {
     }
   };
 
+  const searchHandler = (text) => {
+    const filterData = ques.filter((res) =>
+      res.question.toLowerCase().includes(text.toLowerCase())
+    );
+    setSearchText("");
+    setFilterData(filterData);
+  };
+
   return (
     <>
       <div className="bg w-full min-h-screen text-slate-50 selection:bg-[#ffbe25db] selection:text-slate-50">
         <div className="px-4 sm:px-5 md:px-14">
           <Navbar />
+          {/* Search box */}
+          <div className="hidden md:flex justify-center items-center my-6 w-full">
+            <div className="text-gray-950 flex items-center w-10/12 mx-auto">
+              <input
+                type="text"
+                value={searchText}
+                className="h-[36px] outline-none border-none rounded-sm p-3 w-10/12 bg-slate-50"
+                placeholder="Search your word here .."
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+              <button
+                className="ml-4 border-[3px] md:w-3/12 lg:w-2/12 p-1 rounded-md font-semibold text-slate-50 hover:text-zinc-950 hover:bg-[#ffbd25] hover:border-[#ffbd25] transition-all duration-150"
+                onClick={() => searchHandler(searchText)}
+              >
+                Search
+              </button>
+            </div>
+          </div>
         </div>
-
-        {/* Total Question Solved */}
-        {/* <div className="px-4 sm:px-5 md:px-14 py-6 text-center">
-          <h1 className="lg:text-2xl font-medium">
-            Total Question Solved:{" "}
-            <span className="text-[#ffbd25]">
-              {totalSolvedQues} / {totalQues}
-            </span>
-          </h1>
-        </div> */}
 
         {!loading ? (
           <div className="px-4 sm:px-5 md:px-14 py-6 relative">
@@ -223,7 +239,7 @@ const TopicQuesTemplate = () => {
                 </thead>
 
                 <tbody className="text-center">
-                  {ques.map((ques) => {
+                  {filterData.map((ques) => {
                     return (
                       <tr key={ques.quesId} className="">
                         <td>

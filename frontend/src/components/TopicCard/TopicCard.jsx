@@ -23,8 +23,11 @@ const TopicCard = ({ tag, path }) => {
   return (
     <>
       {loading ? (
-        <div className="flex justify-center items-center mt-20">
-          <span className="loader"></span>
+        <div className="w-[90%] xs:w-[382px] h-[130px] p-4 bg-gray-200 animate-pulse flex flex-col xs:flex-row justify-center items-center md:justify-normal gap-6 xs:gap-10 lg:gap-20 pb-6 xs:p-6 border-2 rounded-md">
+          <div className="flex flex-col gap-y-6">
+            <div className="bg-gray-300 h-8 w-36"></div>
+            <div className="bg-gray-300 h-6 w-60"></div>
+          </div>
         </div>
       ) : (
         <div
