@@ -4,12 +4,11 @@ import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import { json, useNavigate, useParams } from "react-router-dom";
-import { AnswerCount } from "../contexts/AnswerCount";
 import Notes from "../Notes/Notes";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
-import { LoginContext } from "../contexts/LoginContext";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
+import { useUser } from "@clerk/clerk-react";
 
 // valid params routes
 const validParams = [
@@ -36,6 +35,8 @@ const TopicQuesTemplate = () => {
   const params = useParams();
   const topic = params.topic;
 
+  const { isLoaded, isSignedIn } = useUser();
+
   // Validate url-params against valid routes params
   const isValidParams = validParams.includes(topic);
 
@@ -47,9 +48,6 @@ const TopicQuesTemplate = () => {
   }
 
   const userId = JSON.parse(localStorage.getItem("userId"));
-
-  const { isLoggedIn, user } = useContext(LoginContext);
-  const { setAnswerCount } = useContext(AnswerCount);
 
   const [showNotes, setShowNotes] = useState(false);
   const [ques, setQues] = useState([]);
@@ -83,7 +81,7 @@ const TopicQuesTemplate = () => {
     const tagName = ques.topic;
     const userId = JSON.parse(localStorage.getItem("userId"));
 
-    if (isLoggedIn) {
+    if (isSignedIn) {
       localStorage.setItem(
         "quesDetails",
         JSON.stringify({
@@ -155,7 +153,7 @@ const TopicQuesTemplate = () => {
   };
 
   const handleStarClick = (id) => {
-    if (isLoggedIn) {
+    if (isSignedIn) {
       const newState = !markedQuestions[id];
       setMarkedQuestions((prevState) => ({
         ...prevState,
@@ -170,14 +168,13 @@ const TopicQuesTemplate = () => {
   };
 
   const handleCheckboxClick = (id) => {
-    if (isLoggedIn) {
+    if (isSignedIn) {
       const newState = !completedQuestions[id];
       setCompletedQuestions((prevState) => ({
         ...prevState,
         [id]: newState,
       }));
       saveStateToBackend(id, markedQuestions[id], newState);
-      setAnswerCount((prev) => prev + 1);
     } else {
       navigate("/login");
       toast.error("Please login first");

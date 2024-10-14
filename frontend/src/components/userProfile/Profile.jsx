@@ -1,128 +1,78 @@
-import React, { useContext, useEffect, useState } from "react";
-import { auth, db } from "../../firebase/firebase";
-import { doc, getDoc } from "firebase/firestore";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import avatar from "../../assets/avatar.png";
-import { LoginContext } from "../contexts/LoginContext";
-import { AnswerCount } from "../contexts/AnswerCount";
+import { SignedOut, useUser } from "@clerk/clerk-react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
+import toast from "react-hot-toast";
 
 const Profile = () => {
-  const navigate = useNavigate();
+  const { user } = useUser();
 
-  const { isLoggedIn } = useContext(LoginContext);
-  const { answerCount } = useContext(AnswerCount);
+  const [loading, setLoading] = useState(true);
 
-  const [userDetails, setUserDetails] = useState(null);
-
-  const fetchData = async () => {
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        const docRef = doc(db, "Users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setUserDetails(docSnap.data());
-        } else {
-          console.log("No such document!");
-        }
-      } else {
-        console.log("User not logged in!");
-      }
-    });
-  };
-
-  const logout = async () => {
+  const fetchData = () => {
     try {
-      await auth.signOut();
-      navigate("/");
-      toast.success("Logged out successfully!");
+      if (user) {
+        setLoading(false);
+        console.log(user);
+      }
     } catch (error) {
-      console.log("Logout Error: ", error);
+      console.log(error.message);
     }
-  };
-
-  const redirectLogin = () => {
-    navigate("/login");
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [user]);
+
+  const handleSignOut = async () => {
+    try {
+      await Clerk.signOut(); // Clerk signOut method
+      toast.success("User signed out successfully");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   return (
-    <div className="bg w-full min-h-screen text-white selection:bg-[#ffbe25db] selection:text-slate-50">
-      <div className="px-4 sm:px-5 md:px-14 text-white">
-        <Navbar />
-      </div>
-      {userDetails ? (
-        <div className="flex flex-col justify-center items-center w-full h-full">
-          <div className="lg:w-[420px] xxs:w-[300px] xs:w-[340px] bg-zinc-700 rounded-md flex justify-center flex-col items-center p-6 lg:px-6 my-20 overflow-hidden">
-            <div className="overflow-hidden">
-              <img
-                className="w-32 h-32 rounded-full object-cover"
-                src={userDetails.photo || avatar}
-                alt="profile-pic"
-              />
-            </div>
-            <h1 className="lg:text-2xl text-xl font-medium lg:my-4 my-3">
-              Welcome
-            </h1>
-            <div className="w-full">
-              <h2 className="my-3 lg:mb-4 xxs:text-sm xs:text-base">
-                <span className="font-semibold text-[#ffbd25] mr-2">
-                  Full Name:
-                </span>{" "}
-                {userDetails.fullname || userDetails.displayName}
-              </h2>
-              <h2 className="my-3 lg:my-4 xxs:text-sm xs:text-base">
-                <span className="font-semibold text-[#ffbd25] mr-2">
-                  Email:
-                </span>{" "}
-                {userDetails.email}
-              </h2>
-              <h2 className="my-3 lg:my-4 xxs:text-sm xs:text-base">
-                <span className="font-semibold text-[#ffbd25] mr-2">
-                  Total Question Solved:
-                </span>{" "}
-                {answerCount}
-              </h2>
-            </div>
-            <button
-              className="w-full bg-[#ffbd25] p-1 font-semibold text-lg rounded-md my-3 lg:my-4"
-              onClick={logout}
-            >
-              Logout
-            </button>
+    <>
+      <div className="bg min-h-screen selection:bg-[#ffbe25db] selection:text-slate-50">
+        <div className="px-4 sm:px-5 md:px-14 text-white">
+          <Navbar />
+        </div>
+
+        {loading ? (
+          <div className="mt-40 flex justify-center items-center">
+            <span className="loader"></span>
           </div>
-        </div>
-      ) : (
-        <div
-          onLoad={() => toast.error("Please login first!")}
-          className="w-full"
-        >
-          {!isLoggedIn && (
-            <>
-              <div className="h-96 flex flex-col justify-center items-center">
-                <h1 className="text-3xl font-bold text-[#ffbd25] text-center p-4">
-                  Opps!!{" "}
-                  <span className="text-2xl font-medium text-white">
-                    Please Login First ...
-                  </span>
-                </h1>
-                <span className="loader"></span>
-                <button
-                  className="mt-5 border-[3px] px-10 py-2 rounded-md text-lg font-semibold hover:text-zinc-950 hover:bg-[#eee] transition-all duration-150"
-                  onClick={redirectLogin}
-                >
-                  Login Now
-                </button>
+        ) : (
+          <div className="flex items-center mt-20 lg:mt-28 w-full justify-center">
+            <div className="xxs:w-[280px] xs:w-80">
+              <div className="bg-white shadow-xl rounded-lg py-3">
+                <div className="photo-wrapper p-2">
+                  <img
+                    className="w-32 h-32 rounded-full mx-auto"
+                    src={user?.imageUrl}
+                    alt="user image"
+                  />
+                </div>
+                <div className="sm:p-2">
+                  <h3 className="text-center text-xl font-medium leading-8">
+                    {user.fullName || "Guest12ef24"}
+                  </h3>
+
+                  <h3 className="text-center font-medium leading-8 text-sm text-zinc-700">
+                    {user?.primaryEmailAddress?.emailAddress || "Guest12ef24"}
+                  </h3>
+
+                  <div className="text-center w-6/12 mx-auto m-2 bg-[#ffbd25] text-slate-50 px-3 py-1 rounded-md hover:bg-[#ffbe25db] hover:scale-105 font-medium">
+                    <button onClick={handleSignOut}>Logout</button>
+                  </div>
+                </div>
               </div>
-            </>
-          )}
-        </div>
-      )}
-    </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
