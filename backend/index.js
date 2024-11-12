@@ -26,56 +26,56 @@ app.use("/api", noteRoutes);
 // Check Status Routes
 app.use("/api", questionStateRoutes);
 
-const segmentTreeQuestions = [
-    {
-        quesId: 1,
-        tag: "Segment Trees",
-        question: "Range Sum Query - Immutable",
-        difficulty: "Medium",
-        link: "https://leetcode.com/problems/range-sum-query-immutable/",
-        status: false
-    },
-    {
-        quesId: 2,
-        tag: "Segment Trees",
-        question: "Range Minimum Query",
-        difficulty: "Medium",
-        link: "https://cp-algorithms.com/sequences/rmq.html",
-        status: false
-    },
-    {
-        quesId: 3,
-        tag: "Segment Trees",
-        question: "Range Sum Query - Mutable ",
-        difficulty: "Medium",
-        link: "https://leetcode.com/problems/range-sum-query-mutable/",
-        status: false
-    },
-    {
-        quesId: 4,
-        tag: "Segment Trees",
-        question: "Create Sorted Array through Instructions",
-        difficulty: "Hard",
-        link: "https://leetcode.com/problems/create-sorted-array-through-instructions/",
-        status: false
-    },
-    {
-        quesId: 5,
-        tag: "Segment Trees",
-        question: "Count of Range Sum",
-        difficulty: "Hard",
-        link: "https://leetcode.com/problems/count-of-range-sum/",
-        status: false
-    },
-    {
-        quesId: 6,
-        tag: "Segment Trees",
-        question: "Count of Smaller Numbers After Self ",
-        difficulty: "Hard",
-        link: "https://leetcode.com/problems/count-of-smaller-numbers-after-self/",
-        status: false
-    },
-]
+// const segmentTreeQuestions = [
+//     {
+//         quesId: 1,
+//         tag: "Segment Trees",
+//         question: "Range Sum Query - Immutable",
+//         difficulty: "Medium",
+//         link: "https://leetcode.com/problems/range-sum-query-immutable/",
+//         status: false
+//     },
+//     {
+//         quesId: 2,
+//         tag: "Segment Trees",
+//         question: "Range Minimum Query",
+//         difficulty: "Medium",
+//         link: "https://cp-algorithms.com/sequences/rmq.html",
+//         status: false
+//     },
+//     {
+//         quesId: 3,
+//         tag: "Segment Trees",
+//         question: "Range Sum Query - Mutable ",
+//         difficulty: "Medium",
+//         link: "https://leetcode.com/problems/range-sum-query-mutable/",
+//         status: false
+//     },
+//     {
+//         quesId: 4,
+//         tag: "Segment Trees",
+//         question: "Create Sorted Array through Instructions",
+//         difficulty: "Hard",
+//         link: "https://leetcode.com/problems/create-sorted-array-through-instructions/",
+//         status: false
+//     },
+//     {
+//         quesId: 5,
+//         tag: "Segment Trees",
+//         question: "Count of Range Sum",
+//         difficulty: "Hard",
+//         link: "https://leetcode.com/problems/count-of-range-sum/",
+//         status: false
+//     },
+//     {
+//         quesId: 6,
+//         tag: "Segment Trees",
+//         question: "Count of Smaller Numbers After Self ",
+//         difficulty: "Hard",
+//         link: "https://leetcode.com/problems/count-of-smaller-numbers-after-self/",
+//         status: false
+//     },
+// ]
 
 
 // TO piush questions on database
@@ -83,8 +83,8 @@ const segmentTreeQuestions = [
 
 // Database Connection
 connectDB().catch((err) => {
-  console.error("Error connecting to the database", err);
-  process.exit(1);  // Exit the application if the DB connection fails
+    console.error("Error connecting to the database", err);
+    process.exit(1);  // Exit the application if the DB connection fails
 });
 
 

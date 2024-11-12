@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TypeAnimation } from "react-type-animation";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
+import { useUser } from "@clerk/clerk-react";
 
 const Home = () => {
   const navigate = useNavigate();
 
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      // Save the user ID to localStorage when the user signs up
+      const userId = user.id;
+      localStorage.setItem("userId", userId);
+      // console.log("User ID saved to localStorage:", userId);
+    }
+  }, [user]);
   return (
     <>
       <div className="bg w-full h-screen text-white selection:bg-[#ffbe25db] selection:text-slate-50">

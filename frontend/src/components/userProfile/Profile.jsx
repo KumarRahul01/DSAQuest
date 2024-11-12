@@ -6,6 +6,15 @@ import toast from "react-hot-toast";
 const Profile = () => {
   const { user } = useUser();
 
+  // useEffect(() => {
+  //   if (user) {
+  //     // Save the user ID to localStorage when the user signs up
+  //     const userId = user.id;
+  //     localStorage.setItem("userId", userId);
+  //     // console.log("User ID saved to localStorage:", userId);
+  //   }
+  // }, [user]);
+
   const [loading, setLoading] = useState(true);
 
   const fetchData = () => {

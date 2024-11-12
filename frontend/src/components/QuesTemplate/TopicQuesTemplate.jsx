@@ -47,7 +47,7 @@ const TopicQuesTemplate = () => {
     return <NotFoundPage />;
   }
 
-  const userId = JSON.parse(localStorage.getItem("userId"));
+  const userId = localStorage.getItem("userId");
 
   const [showNotes, setShowNotes] = useState(false);
   const [ques, setQues] = useState([]);
@@ -79,7 +79,7 @@ const TopicQuesTemplate = () => {
   const displayNotes = async (ques) => {
     const questionId = ques.quesId;
     const tagName = ques.topic;
-    const userId = JSON.parse(localStorage.getItem("userId"));
+    const userId = localStorage.getItem("userId");
 
     if (isSignedIn) {
       localStorage.setItem(

@@ -14,10 +14,9 @@ const Notes = ({ setShowNotes, noteVal }) => {
   const [notesDesc, setNotesDesc] = useState("");
 
   const saveNotes = async () => {
-    console.log(myData.tag)
     let finalNotes = {
       quesId: myData.quesId,
-      userId: JSON.parse(localStorage.getItem("userId")),
+      userId: localStorage.getItem("userId"),
       tag: myData.tag,
       note: notesDesc,
     };
@@ -29,7 +28,7 @@ const Notes = ({ setShowNotes, noteVal }) => {
         },
       })
       .then((res) => {
-        console.log(res.data, "status: ", res.status);
+        // console.log(res.data, "status: ", res.status);
         if (res.status === 201) {
           toast.success("Note updated successfully");
         } else {
