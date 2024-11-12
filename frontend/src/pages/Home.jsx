@@ -18,6 +18,7 @@ const Home = () => {
       // console.log("User ID saved to localStorage:", userId);
     }
   }, [user]);
+
   return (
     <>
       <div className="bg w-full h-screen text-white selection:bg-[#ffbe25db] selection:text-slate-50">
