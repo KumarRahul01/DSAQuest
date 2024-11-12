@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { CiMenuFries } from "react-icons/ci";
 import { FaGithub, FaUserCircle } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
+import { doSignOut } from "../../firebase/auth";
 
 const Navbar = () => {
   const navigate = useNavigate();

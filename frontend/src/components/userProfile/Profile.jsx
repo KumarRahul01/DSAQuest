@@ -10,15 +10,14 @@ import Navbar from "../Navbar/Navbar";
 
 const Profile = () => {
   const navigate = useNavigate();
-
   const { isLoggedIn } = useContext(LoginContext);
   const { answerCount } = useContext(AnswerCount);
-
   const [userDetails, setUserDetails] = useState(null);
 
   const fetchData = async () => {
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
+    const user = auth.currentUser;
+    if (user) {
+      try {
         const docRef = doc(db, "Users", user.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -26,10 +25,13 @@ const Profile = () => {
         } else {
           console.log("No such document!");
         }
-      } else {
-        console.log("User not logged in!");
+      } catch (error) {
+        console.log("Error fetching document:", error);
+        toast.error("Error fetching user data. Check permissions.");
       }
-    });
+    } else {
+      console.log("User not logged in!");
+    }
   };
 
   const logout = async () => {
@@ -56,69 +58,68 @@ const Profile = () => {
         <Navbar />
       </div>
       {userDetails ? (
-        <div className="flex flex-col justify-center items-center w-full h-full">
-          <div className="lg:w-[420px] xxs:w-[300px] xs:w-[340px] bg-zinc-700 rounded-md flex justify-center flex-col items-center p-6 lg:px-6 my-20 overflow-hidden">
-            <div className="overflow-hidden">
-              <img
-                className="w-32 h-32 rounded-full object-cover"
-                src={userDetails.photo || avatar}
-                alt="profile-pic"
-              />
-            </div>
-            <h1 className="lg:text-2xl text-xl font-medium lg:my-4 my-3">
-              Welcome
-            </h1>
-            <div className="w-full">
-              <h2 className="my-3 lg:mb-4 xxs:text-sm xs:text-base">
-                <span className="font-semibold text-[#ffbd25] mr-2">
-                  Full Name:
-                </span>{" "}
-                {userDetails.fullname || userDetails.displayName}
-              </h2>
-              <h2 className="my-3 lg:my-4 xxs:text-sm xs:text-base">
-                <span className="font-semibold text-[#ffbd25] mr-2">
-                  Email:
-                </span>{" "}
-                {userDetails.email}
-              </h2>
-              <h2 className="my-3 lg:my-4 xxs:text-sm xs:text-base">
-                <span className="font-semibold text-[#ffbd25] mr-2">
-                  Total Question Solved:
-                </span>{" "}
-                {answerCount}
-              </h2>
-            </div>
-            <button
-              className="w-full bg-[#ffbd25] p-1 font-semibold text-lg rounded-md my-3 lg:my-4"
-              onClick={logout}
-            >
-              Logout
-            </button>
-          </div>
-        </div>
+        // <div className="flex flex-col justify-center items-center w-full h-full">
+        //   <div className="lg:w-[420px] xxs:w-[300px] xs:w-[340px] bg-zinc-700 rounded-md flex justify-center flex-col items-center p-6 lg:px-6 my-20 overflow-hidden">
+        //     <div className="overflow-hidden">
+        //       <img
+        //         className="w-32 h-32 rounded-full object-cover"
+        //         src={userDetails.photo || avatar}
+        //         alt="profile-pic"
+        //       />
+        //     </div>
+        //     <h1 className="lg:text-2xl text-xl font-medium lg:my-4 my-3">
+        //       Welcome
+        //     </h1>
+        //     <div className="w-full">
+        //       <h2 className="my-3 lg:mb-4 xxs:text-sm xs:text-base">
+        //         <span className="font-semibold text-[#ffbd25] mr-2">
+        //           Full Name:
+        //         </span>{" "}
+        //         {userDetails.fullname || userDetails.displayName}
+        //       </h2>
+        //       <h2 className="my-3 lg:my-4 xxs:text-sm xs:text-base">
+        //         <span className="font-semibold text-[#ffbd25] mr-2">
+        //           Email:
+        //         </span>{" "}
+        //         {userDetails.email}
+        //       </h2>
+        //       <h2 className="my-3 lg:my-4 xxs:text-sm xs:text-base">
+        //         <span className="font-semibold text-[#ffbd25] mr-2">
+        //           Total Question Solved:
+        //         </span>{" "}
+        //         {answerCount}
+        //       </h2>
+        //     </div>
+        //     <button
+        //       className="w-full bg-[#ffbd25] p-1 font-semibold text-lg rounded-md my-3 lg:my-4"
+        //       onClick={logout}
+        //     >
+        //       Logout
+        //     </button>
+        //   </div>
+        // </div>
+        <div>Your are logged in</div>
       ) : (
         <div
           onLoad={() => toast.error("Please login first!")}
           className="w-full"
         >
           {!isLoggedIn && (
-            <>
-              <div className="h-96 flex flex-col justify-center items-center">
-                <h1 className="text-3xl font-bold text-[#ffbd25] text-center p-4">
-                  Opps!!{" "}
-                  <span className="text-2xl font-medium text-white">
-                    Please Login First ...
-                  </span>
-                </h1>
-                <span className="loader"></span>
-                <button
-                  className="mt-5 border-[3px] px-10 py-2 rounded-md text-lg font-semibold hover:text-zinc-950 hover:bg-[#eee] transition-all duration-150"
-                  onClick={redirectLogin}
-                >
-                  Login Now
-                </button>
-              </div>
-            </>
+            <div className="h-96 flex flex-col justify-center items-center">
+              <h1 className="text-3xl font-bold text-[#ffbd25] text-center p-4">
+                Oops!!{" "}
+                <span className="text-2xl font-medium text-white">
+                  Please Login First ...
+                </span>
+              </h1>
+              <span className="loader"></span>
+              <button
+                className="mt-5 border-[3px] px-10 py-2 rounded-md text-lg font-semibold hover:text-zinc-950 hover:bg-[#eee] transition-all duration-150"
+                onClick={redirectLogin}
+              >
+                Login Now
+              </button>
+            </div>
           )}
         </div>
       )}
